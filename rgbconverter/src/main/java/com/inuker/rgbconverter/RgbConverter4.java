@@ -25,8 +25,8 @@ public class RgbConverter4 extends SingleRgbConverter {
 
     private int mPBO;
 
-    public RgbConverter4(Context context) {
-        super(context);
+    public RgbConverter4(Context context, int width, int height) {
+        super(context, width, height);
     }
 
     private void prepareFramebuffer() {

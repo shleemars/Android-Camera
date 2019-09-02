@@ -3,6 +3,7 @@ package com.inuker.rgbconverter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
+import android.graphics.Matrix;
 import android.opengl.GLES30;
 
 import com.inuker.library.BaseApplication;
@@ -32,11 +33,11 @@ public abstract class RgbConverter implements IRgbConverter {
 
     protected RuntimeCounter mRuntimeCounter;
 
-    public RgbConverter(Context context) {
+    public RgbConverter(Context context, int width, int height) {
         mContext = context;
 
-        mWidth = BaseApplication.getScreenWidth();
-        mHeight = BaseApplication.getScreenHeight();
+        mWidth = width;
+        mHeight = height;
 
         mYUVBuffer = ByteBuffer.allocateDirect(mWidth * mHeight * ImageFormat.getBitsPerPixel(ImageFormat.NV21) / 8)
                 .order(ByteOrder.nativeOrder());
@@ -94,7 +95,7 @@ public abstract class RgbConverter implements IRgbConverter {
             return;
         }
 
-        final Bitmap bmp = Bitmap.createBitmap(mHeight, mWidth, Bitmap.Config.ARGB_8888);
+        final Bitmap bmp = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
 
         pixelBuffer.rewind();
         bmp.copyPixelsFromBuffer(pixelBuffer);

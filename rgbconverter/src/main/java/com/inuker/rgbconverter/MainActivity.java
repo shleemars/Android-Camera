@@ -1,6 +1,8 @@
 package com.inuker.rgbconverter;
 
+import android.Manifest;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -25,39 +27,30 @@ public class MainActivity extends BaseActivity implements EventListener {
 
     private TextView mTvFps;
 
+
+    private static final String[] PERMISSIONS = {
+            Manifest.permission.CAMERA
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(PERMISSIONS, 1);
+        }
+
         mConverterIndex = getIntent().getIntExtra("index", 1);
 
-        mFullSurfaceContainer = (ViewGroup) findViewById(R.id.full);
-        mImage = (ImageView) findViewById(R.id.image);
+        mFullSurfaceContainer = findViewById(R.id.full);
+        mImage = findViewById(R.id.image);
+        mTvFps = findViewById(R.id.fps);
 
-        mTvFps = (TextView) findViewById(R.id.fps);
-
-        CameraSurfaceView cameraSurfaceView = new CameraSurfaceView(this, getRgbConverter());
+        CameraSurfaceView cameraSurfaceView = new CameraSurfaceView(this);
         mFullSurfaceContainer.addView(cameraSurfaceView);
 
         EventDispatcher.observe(this, BITMAP_AVAILABLE, FPS_AVAILABLE);
-    }
-
-    public RgbConverter getRgbConverter() {
-        switch (mConverterIndex) {
-            case 1:
-                return new RgbConverter1(this);
-            case 2:
-                return new RgbConverter2(this);
-            case 3:
-                return new RgbConverter3(this);
-            case 4:
-                return new RgbConverter4(this);
-            case 5:
-                return new RgbConverter5(this);
-            default:
-                return null;
-        }
     }
 
     @Override

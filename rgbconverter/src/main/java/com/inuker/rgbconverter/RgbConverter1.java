@@ -8,8 +8,8 @@ import android.content.Context;
 
 public class RgbConverter1 extends RgbConverter {
 
-    public RgbConverter1(Context context) {
-        super(context);
+    public RgbConverter1(Context context, int width, int height) {
+        super(context, width, height);
     }
 
     @Override

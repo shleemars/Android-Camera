@@ -25,8 +25,8 @@ public class SingleRgbConverter extends RgbConverter implements Handler.Callback
     protected EglCore mEglCore;
     protected OffscreenSurface mOffscreenSurface;
 
-    public SingleRgbConverter(Context context) {
-        super(context);
+    public SingleRgbConverter(Context context, int width, int height) {
+        super(context, width, height);
     }
 
     @Override

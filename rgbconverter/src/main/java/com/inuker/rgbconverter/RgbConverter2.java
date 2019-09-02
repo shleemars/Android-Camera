@@ -12,8 +12,8 @@ public class RgbConverter2 extends SingleRgbConverter {
 
     private YUVProgram mYUVProgram;
 
-    public RgbConverter2(Context context) {
-        super(context);
+    public RgbConverter2(Context context, int width, int height) {
+        super(context, width, height);
     }
 
     @Override

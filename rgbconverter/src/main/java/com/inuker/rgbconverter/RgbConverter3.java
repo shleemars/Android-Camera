@@ -18,8 +18,8 @@ public class RgbConverter3 extends SingleRgbConverter {
 
     private YUVProgram mYUVProgram;
 
-    public RgbConverter3(Context context) {
-        super(context);
+    public RgbConverter3(Context context, int width, int height) {
+        super(context, width, height);
     }
 
     @Override

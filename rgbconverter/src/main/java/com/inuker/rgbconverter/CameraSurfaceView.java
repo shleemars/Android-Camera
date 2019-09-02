@@ -2,10 +2,12 @@ package com.inuker.rgbconverter;
 
 import android.content.Context;
 import android.graphics.ImageFormat;
+import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.opengl.GLES30;
 import android.os.Message;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.inuker.library.BaseApplication;
@@ -15,6 +17,7 @@ import com.inuker.library.WindowSurface;
 import com.inuker.library.program.YUVProgram;
 
 import java.io.IOException;
+import java.lang.reflect.Parameter;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -40,27 +43,35 @@ public class CameraSurfaceView extends BaseSurfaceView implements Camera.Preview
 
     private RgbConverter mRgbConverter;
 
-    public CameraSurfaceView(Context context, RgbConverter converter) {
+    public CameraSurfaceView(Context context) {
         super(context);
-
-        mRgbConverter = converter;
     }
 
     @Override
     public void onSurfaceCreated(SurfaceHolder holder) {
         mCamera = Camera.open(1);
 
+        Camera.Parameters parameters = mCamera.getParameters();
+        parameters.setPreviewFormat(ImageFormat.NV21);
+        parameters.setPreviewSize(1920, 1080);
+        mCamera.setParameters(parameters);
+
+        Camera.Size size = mCamera.getParameters().getPreviewSize();
+        Log.d("shlee", "onSurfaceCreated: width = " + size.width +", height = " + size.height);
+
         mEglCore = new EglCore(null, EglCore.FLAG_TRY_GLES3);
         mWindowSurface = new WindowSurface(mEglCore, holder.getSurface(), false);
         mWindowSurface.makeCurrent();
-
-        mYUVProgram = new YUVProgram(getContext(), BaseApplication.getScreenWidth(), BaseApplication.getScreenHeight());
-
-        mRgbConverter.start();
     }
 
     @Override
     public void onSurfaceChanged(int width, int height) {
+        Log.d(TAG, "onSurfaceChanged: width = " + width + ", height = " + height);
+        mYUVProgram = new YUVProgram(getContext(), width, height);
+
+        mRgbConverter = new RgbConverter4(getContext(), width, height);
+        mRgbConverter.start();
+
         int bufferSize = width * height * ImageFormat.getBitsPerPixel(ImageFormat.NV21) / 8;
 
         mYUVBuffer = ByteBuffer.allocateDirect(bufferSize)

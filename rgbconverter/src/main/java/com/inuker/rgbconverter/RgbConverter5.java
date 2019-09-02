@@ -21,8 +21,8 @@ public class RgbConverter5 extends SingleRgbConverter {
 
     private int mPBO;
 
-    public RgbConverter5(Context context) {
-        super(context);
+    public RgbConverter5(Context context, int width, int height) {
+        super(context, width, height);
     }
 
     private void preparePBOBuffer() {

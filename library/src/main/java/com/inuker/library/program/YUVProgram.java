@@ -157,7 +157,7 @@ public class YUVProgram extends ShaderProgram {
 
         Matrix.setIdentityM(mMatrix, 0);
         int orientation = mContext.getResources().getConfiguration().orientation;
-        int degrees = orientation == Configuration.ORIENTATION_LANDSCAPE ? 0 : -90;
+        int degrees = orientation == Configuration.ORIENTATION_LANDSCAPE ? 0 : 90;
         Matrix.rotateM(mMatrix, 0, degrees, 0.0f, 0.0f, 1.0f);
 
         GLES20.glUniformMatrix4fv(mMVPMatrixLocation, 1, false, mMatrix, 0);
